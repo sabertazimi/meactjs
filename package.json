@@ -4,7 +4,9 @@
   "description": "Minimal react-like library",
   "main": "./src/index.js",
   "scripts": {
-    "test": "jest --coverage --onlyChanged"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom"
   },
   "repository": {
     "type": "git",
@@ -20,8 +22,9 @@
   },
   "homepage": "https://github.com/sabertazimi/meactjs#readme",
   "devDependencies": {
-    "codecov": "^3.0.2",
-    "eslint": "^4.19.1",
-    "jest": "^23.1.0"
+    "codecov": "^3.0.2"
+  },
+  "dependencies": {
+    "react-scripts": "^1.1.4"
   }
 }
