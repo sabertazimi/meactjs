@@ -1,0 +1,27 @@
+{
+  "name": "meactjs",
+  "version": "0.1.0",
+  "description": "Minimal react-like library",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "jest --coverage --onlyChanged"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sabertazimi/meactjs.git"
+  },
+  "keywords": [
+    "react"
+  ],
+  "author": "sabertazimi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sabertazimi/meactjs/issues"
+  },
+  "homepage": "https://github.com/sabertazimi/meactjs#readme",
+  "devDependencies": {
+    "codecov": "^3.0.2",
+    "eslint": "^4.19.1",
+    "jest": "^23.1.0"
+  }
+}
