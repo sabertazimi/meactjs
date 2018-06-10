@@ -1,6 +1,28 @@
 const TEXT_ELEMENT_TYPE = 'text element';
 const CHILDREN_PROP = 'children';
 
+const createTextElement = (value) => {
+    return createElement(TEXT_ELEMENT_TYPE, {
+        nodeValue: value
+    });
+}
+
+const createElement = (type, config, ...args) => {
+    const props = { ...config };
+    const hasChildren = args.length > 0;
+    const rawChildren = hasChildren ? [].concat(...args) : [];
+
+    // transform text element when c === 'string'
+    props.children = rawChildren
+        .filter(c => c !== null && c !== false)
+        .map(c => c instanceof Object ? c : createTextElement(c));
+
+    return {
+        type,
+        props
+    };
+};
+
 const render = (element, parentDOM) => {
     const {
         type,
@@ -34,36 +56,23 @@ const render = (element, parentDOM) => {
     parentDOM.appendChild(dom);
 };
 
-const meactElement = {
-    type: 'div',
-    props: {
-        id: 'container',
-        children: [{
-                type: 'input',
-                props: {
-                    value: 'foo',
-                    type: 'text'
-                }
-            },
-            {
-                type: 'a',
-                props: {
-                    href: '/bar'
-                }
-            },
-            {
-                type: 'span',
-                props: {}
-            },
-            {
-                type: TEXT_ELEMENT_TYPE, 
-                props: {
-                    nodeValue: 'text'
-                }
-            }
-        ]
-    }
-};
+const meactElement = createElement(
+    'div',
+    { id: 'container' },
+    createElement('input', { value: 'foo', type: 'text' }),
+    createElement(
+      'a',
+      { href: '/bar' },
+      'bar'
+    ),
+    createElement(
+      'span',
+      { onClick: e => alert('Hi') },
+      'click me'
+    )
+);
+
+// render(meactElement, document.getElementById('root'));
 
 export {
     render
