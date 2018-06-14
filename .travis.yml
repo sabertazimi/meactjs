@@ -8,5 +8,4 @@ before_install:
   - sudo apt-get install -y sshpass
 script:
   - npm install
-  - npm test -- --coverage
-  - ./node_modules/.bin/codecov
+  - npm run build

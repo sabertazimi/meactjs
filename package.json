@@ -4,13 +4,16 @@
   "description": "Minimal react-like library",
   "main": "./src/index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom"
+    "dev": "webpack-dev-server --port 2333 --mode development --open",
+    "build": "webpack --mode production",
+    "start": "npm run dev"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sabertazimi/meactjs.git"
+  },
+  "engines": {
+    "node": ">=9"
   },
   "keywords": [
     "react"
@@ -22,9 +25,20 @@
   },
   "homepage": "https://github.com/sabertazimi/meactjs#readme",
   "devDependencies": {
-    "codecov": "^3.0.2"
-  },
-  "dependencies": {
-    "react-scripts": "^1.1.4"
+    "autoprefixer": "^8.6.2",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "clean-webpack-plugin": "^0.1.19",
+    "css-loader": "^0.28.11",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.4.0",
+    "postcss-loader": "^2.1.5",
+    "style-loader": "^0.21.0",
+    "webpack": "^4.12.0",
+    "webpack-cli": "^3.0.6",
+    "webpack-dev-server": "^3.1.4"
   }
 }

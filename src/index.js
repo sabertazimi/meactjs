@@ -1,3 +1,5 @@
+import style from './index.css';
+
 const TEXT_ELEMENT_TYPE = 'text element';
 const CHILDREN_PROP = 'children';
 
@@ -53,7 +55,11 @@ const render = (element, parentDOM) => {
     childElements.forEach(childElement => render(childElement, dom));
 
     // append to parent
-    parentDOM.appendChild(dom);
+    // if (!parentDOM.lastChild) {
+        parentDOM.appendChild(dom);
+    // } else {
+        // parentDOM.replaceChild(dom, parentDOM.lastChild);
+    // }
 };
 
 const meactElement = createElement(
@@ -72,7 +78,7 @@ const meactElement = createElement(
     )
 );
 
-// render(meactElement, document.getElementById('root'));
+render(meactElement, document.getElementById('root'));
 
 export {
     render
