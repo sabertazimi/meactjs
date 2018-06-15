@@ -62,20 +62,12 @@ const render = (element, parentDOM) => {
     // }
 };
 
-const meactElement = createElement(
-    'div',
-    { id: 'container' },
-    createElement('input', { value: 'foo', type: 'text' }),
-    createElement(
-      'a',
-      { href: '/bar' },
-      'bar'
-    ),
-    createElement(
-      'span',
-      { onClick: e => alert('Hi') },
-      'click me'
-    )
+const meactElement = (
+    <div id="container">
+      <input value="foo" type="text" />
+      <a href="/bar">bar</a>
+      <span onClick={e => alert("Hi")}>click me</span>
+    </div>
 );
 
 render(meactElement, document.getElementById('root'));
