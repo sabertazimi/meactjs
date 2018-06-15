@@ -1,114 +1,72 @@
+import Meact from './meact.js';
+
 import style from './index.css';
 
-const TEXT_ELEMENT_TYPE = 'text element';
-const CHILDREN_PROP = 'children';
-
-let rootInstance = null;
-
-const createTextElement = (value) => {
-    return createElement(TEXT_ELEMENT_TYPE, {
-        nodeValue: value
-    });
-};
-
-const createElement = (type, config, ...args) => {
-    const props = { ...config
-    };
-    const hasChildren = args.length > 0;
-    const rawChildren = hasChildren ? [].concat(...args) : [];
-
-    // transform text element when c === 'string'
-    props.children = rawChildren
-        .filter(c => c !== null && c !== false)
-        .map(c => c instanceof Object ? c : createTextElement(c));
-
-    return {
-        type,
-        props
-    };
-};
-
-const render = (element, container) => {
-    const prevInstance = rootInstance;
-    const nextInstance = reconcile(container, prevInstance, element);
-    rootInstance = nextInstance;
-};
-
-const reconcile = (parentDOM, instance, element) => {
-    if (instance === null) {
-        const newInstance = instantiate(element);
-        parentDOM.appendChild(newInstance.dom);
-        return newInstance;
-    } else {
-        const newInstance = instantiate(element);
-        parentDOM.replaceChild(newInstance.dom, instance.dom);
-        return newInstance;
+const stories = [{
+        name: "Didact introduction",
+        url: "http://bit.ly/2pX7HNn"
+    },
+    {
+        name: "Rendering DOM elements ",
+        url: "http://bit.ly/2qCOejH"
+    },
+    {
+        name: "Element creation and JSX",
+        url: "http://bit.ly/2qGbw8S"
+    },
+    {
+        name: "Instances and reconciliation",
+        url: "http://bit.ly/2q4A746"
+    },
+    {
+        name: "Components and state",
+        url: "http://bit.ly/2rE16nh"
     }
-};
+];
 
-const instantiate = (element) => {
-    const {
-        type,
-        props
-    } = element;
+class App extends Meact.Component {
+    render() {
+        return (
+            <div>
+              <h1>Didact Stories</h1>
+              <ul>
+                {this.props.stories.map(story => {
+                  return <Story name={story.name} url={story.url} />;
+                })}
+              </ul>
+            </div>
+        );
+    }
+}
 
-    // create DOM element
-    const isTextElement = type === TEXT_ELEMENT_TYPE;
-    const dom = isTextElement ?
-        document.createTextNode('') :
-        document.createElement(type);
+class Story extends Meact.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            likes: Math.ceil(Math.random() * 100)
+        };
+    }
+    like() {
+        this.setState({
+            likes: this.state.likes + 1
+        });
+    }
+    render() {
+        const {
+            name,
+            url
+        } = this.props;
+        const {
+            likes
+        } = this.state;
+        const likesElement = <span /> ;
+        return (
+            <li>
+                <button onClick={e => this.like()}>{likes}<b>❤️</b></button>
+                <a href={url}>{name}</a>
+            </li>
+        );
+    }
+}
 
-    updateDOMProperties(dom, [], props);
-
-    // instantiate children
-    const childElements = props.children || [];
-    const childInstances = childElements.map(instantiate);
-
-    // append children
-    const childDOMs = childInstances.map(childInstance => childInstance.dom);
-    childDOMs.forEach(childDOM => dom.appendChild(childDOM));
-
-    // construct instance with attributes and children
-    const instance = {
-        dom,
-        element,
-        childInstances
-    };
-    return instance;
-};
-
-const updateDOMProperties = (dom, prevProps, nextProps) => {
-    // add event listeners
-    const isListener = name => name.startsWith('on');
-    const isAttribute = name => !isListener(name) && name !== CHILDREN_PROP;
-
-    // remove prevProps
-    Object.keys(prevProps).filter(isListener).forEach((name) => {
-        const eventType = name.toLowerCase().substring(2); // trip off 'on'
-        dom.removeEventListener(eventType, prevProps[name]);
-    });
-
-    Object.keys(prevProps).filter(isAttribute).forEach((name) => {
-        dom[name] = null;
-    });
-
-    // add nextProps
-    Object.keys(nextProps).filter(isListener).forEach((name) => {
-        const eventType = name.toLowerCase().substring(2); // trip off 'on'
-        dom.addEventListener(eventType, nextProps[name]);
-    });
-
-    Object.keys(nextProps).filter(isAttribute).forEach((name) => {
-        dom[name] = nextProps[name];
-    });
-};
-
-const meactElement = (
-    <div id="container">
-        <input value="foo" type="text" />
-        <a href="/bar">bar</a>
-        <span onClick={e => alert("Hi")}>click me</span>
-    </div>
-);
-
-render(meactElement, document.getElementById('root'));
+Meact.render(<App stories = { stories } />, document.getElementById("root"));

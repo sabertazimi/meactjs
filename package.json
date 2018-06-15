@@ -26,6 +26,7 @@
   "homepage": "https://github.com/sabertazimi/meactjs#readme",
   "devDependencies": {
     "autoprefixer": "^8.6.2",
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
