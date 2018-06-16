@@ -7,7 +7,8 @@ const createTextElement = (value) => {
 };
 
 const createElement = (type, config, ...args) => {
-    const props = { ...config
+    const props = {
+        ...config
     };
     const hasChildren = args.length > 0;
     const rawChildren = hasChildren ? [].concat(...args) : [];

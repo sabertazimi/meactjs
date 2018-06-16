@@ -42,9 +42,9 @@ const createDOMElement = (element) => {
 
     updateDOMProperties(dom, [], props);
     return dom;
-}
+};
 
 export {
     updateDOMProperties,
     createDOMElement
-}
+};
