@@ -1,32 +1,25 @@
 import {
-    updateInstance
+    scheduleUpdate
 } from './reconciler.js';
 
 class Component {
     constructor(props) {
-        this.props = props;
+        this.props = props || {};
         this.state = this.state || {};
     }
 
     setState(partialState) {
-        this.state = { ...this.state,
-            ...partialState
-        };
-        updateInstance(this.__internalInstance);
+        scheduleUpdate(this, partialState);
     }
 }
 
-const createPublicInstance = (element, internalInstance) => {
-    const {
-        type,
-        props
-    } = element;
-    const publicInstance = new type(props);
-    publicInstance.__internalInstance = internalInstance;
-    return publicInstance; // return component instance
+const createInstance = (fiber) => {
+    const instacne = new fiber.type(fiber.props);
+    instance.__fiber = fiber;
+    return instance;
 };
 
 export {
     Component,
-    createPublicInstance
+    createInstance
 };

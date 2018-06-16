@@ -3,10 +3,81 @@ import {
     updateDOMProperties
 } from './dom-utils.js';
 import {
-    createPublicInstance
+    createInstance as createPublicInstance
 } from './component.js';
 
-let rootInstance = null;
+// fiber tags
+const HOST_COMPONENT = 'host';
+const CLASS_COMPONENT = 'class';
+const HOST_ROOT = 'root';
+
+// effect tags
+const PLACEMENT = 1;
+const DELETION = 2;
+const UPDATE = 3;
+
+const ENOUGH_TIME = 1; // milliseconds
+
+// global state
+const updateQueue = [];
+let nextUnitOfWork = null;
+let pendingCommit = null;
+
+const performWork = (deadline) => {
+    workloop(deadline);
+    
+    // checks if there's pending work
+    if (nextUnitOfWork || updateQueue.length > 0) {
+        requestIdleCallback(performWork);
+    }
+};
+
+const workloop = (deadline) => {
+    if (!nextUnitOfWork) {
+        resetNextUnitOfWork();
+    }
+
+    while (nextUnitOfWork && deadline.timeRemaining() > ENOUGH_TIME) {
+        nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
+    }
+
+    if (pendingCommit) {
+        commitAllWork(pendingCommit);
+    }
+};
+
+const resetNextUnitOfWork = () => {
+
+};
+
+const performUnitOfWork = (work) => {
+
+};
+
+const commitAllWork = (pendingCommit) => {
+
+};
+
+const scheduleUpdate = (instance, partialState) => {
+    updateQueue.push({
+        from: CLASS_COMPONENT,
+        instance,
+        partialState
+    });
+
+    requestIdleCallback(performWork);
+};
+
+const render = (elements, container) => {
+    updateQueue.push({
+        from: HOST_ROOT,
+        dom: container,
+        newProps: { children: elements }
+    });
+
+    requestIdleCallback(performWork);
+};
+
 
 // core function 1: render DOM/component element to true DOM node
 const instantiate = (element) => {
@@ -111,13 +182,7 @@ const updateInstance = (internalInstance) => {
     reconcile(parentDOM, internalInstance, element);
 };
 
-const render = (element, container) => {
-    const prevInstance = rootInstance;
-    const nextInstance = reconcile(container, prevInstance, element);
-    rootInstance = nextInstance;
-};
-
 export {
-    updateInstance,
+    scheduleUpdate,
     render
 };
