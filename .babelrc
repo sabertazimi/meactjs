@@ -1,10 +1,5 @@
 {
     "presets": [
-        "env"
-    ],
-    "plugins": [
-        "transform-object-rest-spread",
-        "transform-react-jsx",
-        "transform-meact-jsx"
+        "meact"
     ]
 }
